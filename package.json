@@ -1,0 +1,12 @@
+{
+  "name": "@haxtra/kvstore-sqlite",
+  "version": "0.9.0",
+  "description": "Basic key-value store for SQLite databases",
+  "homepage": "https://github.com/haxtra/kvstore-sqlite",
+  "repository": "github:haxtra/kvstore-sqlite",
+  "main": "XRay.jsx",
+  "scripts": {},
+  "keywords": ["kvstore","key-value","sqlite"],
+  "author": "Hax <hax@haxtra.com>",
+  "license": "MIT"
+}
