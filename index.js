@@ -65,7 +65,7 @@ class KVStore {
 	}
 
 	data(page=1, limit=1000){
-		/** Returns full store **/
+		/** Returns full store as an array **/
 
 		const offset = (page - 1) * limit
 		const records = this.db.prepare(`SELECT * FROM ${this.table} LIMIT ? OFFSET ?;`).all(limit, offset)
@@ -78,7 +78,31 @@ class KVStore {
 		this.db.prepare(`DELETE FROM ${this.table};`).run()
 	}
 
-	// Helpers ////////////////////////////////////////////
+	/// Schema ////////////////////////////////////////////
+
+	createTable(){
+		/** Create store table **/
+
+		// table must not exist
+		if(this.db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name=?;").get(this.table))
+			return false
+
+		const schema = (
+			`CREATE TABLE ${this.table} (\n` +
+			"key TEXT PRIMARY KEY,\n" +
+			"value TEXT,\n" +
+			"updated INTEGER NOT NULL DEFAULT 0,\n" +
+			"created INTEGER NOT NULL DEFAULT 0\n" +
+			");"
+		)
+
+		// create table
+		this.db.exec(schema)
+
+		return true
+	}
+
+	/// Helpers ///////////////////////////////////////////
 
 	#timeNow() {
 		return Date.now() / 1000 | 0
