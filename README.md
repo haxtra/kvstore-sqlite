@@ -14,7 +14,7 @@ npm install @haxtra/kvstore-sqlite
 - everything is passed through JSON on the way in and out, so:
     - NaN, Infinity become nulls
     - no circular references
-    - if data is not jsonable, it will throw
+    - if data is not JSONable, it will throw
 
 
 ## Usage
@@ -24,16 +24,17 @@ Create instance
 ```js
 const KVStore = require('@haxtra/kvstore-sqlite')
 
-const kv = new KVStore(<superSqlite3Instance>, {
+const kv = new KVStore(superSqlite3Instance, {
     table: 'kvstore'  // table to use for the store, default "kvstore"
 })
+
 // when running for the first time, create the table
 kv.createTable()
 ```
 
 ## API
 
-> Note: All methods are synchronous
+> **Note:** All methods are synchronous.
 
 Set/update value
 ```js
@@ -77,10 +78,28 @@ kv.purge()
 
 ## Schema
 
-Create store table with preconfigured name, defaults to `kvstore`. Returns `true` on success, `false` if table exists, throws on funky table names.
+### Create table
+
+Create store table with preconfigured name, defaults to `kvstore`. Returns `true` on success, `false` if table exists, throws on invalid table name.
 
 ```js
 kv.createTable()
+```
+
+### Get schema
+
+Get schema definition as a SQL string, with respect to current config.
+
+```js
+kv.getSchema()
+```
+
+### Schema file
+
+Get absolute path to `schema.sql` file:
+
+```js
+require.resolve('@haxtra/kvstore-sqlite/schema.sql')
 ```
 
 ## License

@@ -87,19 +87,17 @@ class KVStore {
 		if(this.db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name=?;").get(this.table))
 			return false
 
-		const schema = (
-			`CREATE TABLE ${this.table} (\n` +
-			"key TEXT PRIMARY KEY,\n" +
-			"value TEXT,\n" +
-			"updated INTEGER NOT NULL DEFAULT 0,\n" +
-			"created INTEGER NOT NULL DEFAULT 0\n" +
-			");"
-		)
-
-		// create table
-		this.db.exec(schema)
+		// get schema & create the table
+		this.db.exec(this.getSchema())
 
 		return true
+	}
+
+	getSchema() {
+		/** Return schema definition for the store **/
+		const filePath = require.resolve('./schema.sql')
+		const sql = require('node:fs').readFileSync(filePath, 'utf8').toString()
+		return sql.replace('kvstore', this.table)
 	}
 
 	/// Helpers ///////////////////////////////////////////
